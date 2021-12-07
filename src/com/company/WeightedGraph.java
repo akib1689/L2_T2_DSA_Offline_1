@@ -6,7 +6,7 @@ import java.util.Collections;
 public class WeightedGraph {
     private int V;
 
-    private ArrayList<Edge> edges;
+    private final ArrayList<Edge> edges;
 
 
     public WeightedGraph(int v) {
@@ -14,7 +14,7 @@ public class WeightedGraph {
         edges = new ArrayList<>();
     }
 
-    public void addEdge(int src,int des,int weight){
+    public void addEdge(int src,int des,double weight){
         if (src != des) {
             Edge edge = new Edge(src, des, weight);
             edges.add(edge);

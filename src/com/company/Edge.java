@@ -1,9 +1,10 @@
 package com.company;
 
 public class Edge implements Comparable<Edge>{
-    int source,destination,weight;
+    int source,destination;
+    double weight;
 
-    public Edge(int src, int des, int weight) {
+    public Edge(int src, int des, double weight) {
         source = src;
         destination = des;
         this.weight = weight;
@@ -12,6 +13,6 @@ public class Edge implements Comparable<Edge>{
 
     @Override
     public int compareTo(Edge that) {
-        return Integer.compare(weight, that.weight);
+        return Double.compare(weight, that.weight);
     }
 }

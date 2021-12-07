@@ -1,36 +1,56 @@
 package com.company;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
 
+        try (BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
+            String line = reader.readLine();
+            String[] mn = line.split(" ");
+            int n = Integer.parseInt(mn[0]);
+            int m = Integer.parseInt(mn[1]);
+            WeightedGraph graph = new WeightedGraph(n);
+            WeightedGraphAdjList graphWithAdjList = new WeightedGraphAdjList(n);
+            for (int i=0; i<m;i++){
+                line = reader.readLine();
+                String[] inputs = line.split(" ");
+                int u = Integer.parseInt(inputs[0]);
+                int v = Integer.parseInt(inputs[1]);
+                double w = Double.parseDouble(inputs[2]);
+                graph.addEdge(u,v,w);
+                graphWithAdjList.addEdge(u,v,w);
+            }
 
-        WeightedGraph g = new WeightedGraph(9);
-        g.addEdge(0, 1, 4);
-        g.addEdge(0, 7, 8);
-        g.addEdge(1, 2, 8);
-        g.addEdge(1, 7, 11);
-        g.addEdge(2, 3, 7);
-        g.addEdge(2, 8, 2);
-        g.addEdge(2, 5, 4);
-        g.addEdge(3, 4, 9);
-        g.addEdge(3, 5, 14);
-        g.addEdge(4, 5, 10);
-        g.addEdge(5, 6, 2);
-        g.addEdge(6, 7, 1);
-        g.addEdge(6, 8, 6);
-        g.addEdge(7, 8, 7);
+            LazyPrimsAlgo primsAlgo = new LazyPrimsAlgo(graphWithAdjList);
+            ArrayList<Edge> kruskal = graph.findMSTKruskal();
+            Iterable<Edge> prims = primsAlgo.getMST();
 
-        ArrayList<Edge> edges = g.findMSTKruskal();
-        int totalCost = 0;
-        System.out.println("list of edges by kruskal's: {");
-        for (Edge edge:edges){
-            totalCost += edge.weight;
-            System.out.println(edge.source + "--" + edge.destination +" cost: " + edge.weight);
+            double cost = 0;
+            for (Edge edge : kruskal){
+                cost += edge.weight;
+            }
+
+            System.out.println("Cost of the minimum spanning tree: " + cost);
+            System.out.print("List of edges by kruskal's algo: {");
+            for (Edge edge: kruskal){
+                System.out.print("(" + edge.source + "," + edge.destination + ")");
+            }
+            System.out.println("}");
+
+            System.out.print("List of edges by Prim's algo: {");
+            for (Edge edge: prims){
+                System.out.print("(" + edge.source + "," + edge.destination + ")");
+            }
+            System.out.print("}");
+
+        }catch (IOException e){
+            e.printStackTrace();
         }
-        System.out.println("Total cost of the tree: " + totalCost);
+
+
     }
 }
